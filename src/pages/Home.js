@@ -6,18 +6,19 @@ import GameContext from '../context/GameContext';
 
 const GamePage = () => {
     
-    //State for game settings, stats and display
+    // State for game settings, stats, display and current game data
     const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
     const [stats, setStats] = useState({leader: {player: 'No Leader Yet', score: 0}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
+    const [currentGame, setCurrentGame] = useState({bombsRemaining: 0, status: 'welcome'});
 
-    //Handle display mode updates between game and tools screens
+    // Handle display mode updates between game and tools screens
     const updateDisplayMode = (newMode) => {
         setDisplay({mode: newMode});
     }
     
-    //Handle stats updates
-    const checkLeaderboard = (player, score) => { //player is string, score is number
+    // Handle stats updates
+    const checkLeaderboard = (player, score) => { // player is string, score is number
         if (stats.leader.score < score) {
             let tempStats = stats;
             tempStats.leader = {player: player, score: score};
@@ -26,15 +27,15 @@ const GamePage = () => {
         } 
         return false;
     }
-    const addGamePlayed = (didWin) => { //didWin is bool
+    const addGamePlayed = (didWin) => { // didWin is bool
         let tempStats = stats;
         tempStats.gamesPlayed++;
         {didWin && tempStats.gamesWon++}
         setStats(tempStats);
     }
 
-    //Handle settings updates
-    const updateSound = (value) => { //value is bool
+    // Handle settings updates
+    const updateSound = (value) => { // value is bool
         let tempSettings = settings;
         tempSettings.sound = value;
         setSettings(tempSettings);
@@ -53,16 +54,33 @@ const GamePage = () => {
         }
     }
 
-    //data to be passed to components via GameContext context hook
+    // Handle currentGame state updates
+    const updateBombs = (direction) => { // direction is 'increment' or 'decrement' bombsReamining for current game
+        if (direction === 'increment') { 
+            setCurrentGame({status: currentGame.status, bombsRemaining: currentGame.bombsRemaining + 1});
+        } else if (direction === 'decrement') {
+            setCurrentGame({status: currentGame.status, bombsRemaining: currentGame.bombsRemaining - 1});
+        }
+    }
+    const updateGameStatus = (newStatus) => {
+        let bombsR;
+        {newStatus === 'start' ?  bombsR = settings.totalBombs : bombsR = currentGame.bombsRemaining}
+        setCurrentGame({status: newStatus, bombsRemaining: bombsR});
+    }
+
+    // data to be passed to components via GameContext context hook
     const contextData = {
         settings: settings,
         stats: stats, 
         display: display,
+        currentGame: currentGame,
         updateDisplayMode: updateDisplayMode,
         checkLeaderboard: checkLeaderboard,
         addGamePlayed: addGamePlayed,
         updateSound: updateSound,
-        updateDifficulty: updateDifficulty
+        updateDifficulty: updateDifficulty,
+        updateBombs: updateBombs,
+        updateGameStatus: updateGameStatus
     }
     
     return (

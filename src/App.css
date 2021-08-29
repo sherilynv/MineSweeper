@@ -104,17 +104,23 @@ header img {
   left: 55px;
   width: calc(50vw);
   max-height: calc(70vh);
-  background-color: rgba(43,45,69,1);
+  background-color: #2b3141;
   color: #ffffff;
   border-radius: 0px 20px 20px 0px;
   text-align: left;
-  border: 10px solid rgba(43,45,69,0.9);
+  border-right: 5px solid rgba(0,0,0,0.5);
+  border-top: 5px solid rgba(0,0,0,0.5);
+  border-bottom: 5px solid rgba(0,0,0,0.5);
   overflow: scroll;
+}
+
+.context-header {
+  color: #4ec8f1;
 }
 
 #content-flyout-inner-div {
   position: relative;
-  padding: 3%;
+  padding: 3% 3% 3% 5%;
 }
 
 #close-flyout-button-container {
@@ -126,8 +132,8 @@ header img {
   cursor: pointer;
 }
 
-.context-header {
-  color: #4ec8f1;
+.content-flyout-content li {
+  color: #cccccc;
 }
 
 /*************************************/
@@ -150,4 +156,25 @@ header img {
   width: 25%;
   padding: 10px;
   background-color: #2b3141;
+}
+
+/* New Game button */
+#reset-button-container {
+  margin: 20px 0;
+}
+
+/* Game clock and Bomb Counter */
+#game-clock-container, #bomb-counter-container {
+  color: white;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.game-clock, .bomb-counter {
+  background-color: black;
+  border-radius: 20px;
+  padding: 10px;
+  text-align:center;
+  color: #d58dde;
+  margin: 5px 0 20px;
 }
