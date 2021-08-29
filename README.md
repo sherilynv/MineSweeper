@@ -1,2 +1,2 @@
 # MineSweeper
-React Mine Sweeper challenge for Spekit
+React Mine Sweeper
