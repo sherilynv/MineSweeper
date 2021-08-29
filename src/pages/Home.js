@@ -87,7 +87,7 @@ const GamePage = () => {
         <GameContext.Provider value={contextData}>
             <div id="game-page-container"> 
                 <Tools />
-                <Board />
+                <Board difficulty={settings.difficulty} boardSize={settings.boardSize} totalBombs={settings.totalBombs} mode={display.mode} gameStatus={currentGame.status} updateGameStatus={updateGameStatus}/>
                 <Progress />           
             </div>
         </GameContext.Provider>

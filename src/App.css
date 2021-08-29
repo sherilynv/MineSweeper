@@ -148,6 +148,120 @@ header img {
 
 }
 
+/* Welcome view */
+#welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(80vh);
+}
+
+#welcome-container img {
+  max-width: 200px;
+}
+
+/* Game Play view */
+#game-board-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(80vh);
+}
+
+#game-board {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+.board-difficulty {
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.board-square-container {
+  display: inline;
+  width: 10%;
+  max-width: 50px;
+}
+.board-square-container:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.board-square-value {
+  max-width: 30px;
+  font-weight: 600;
+}
+
+.board-square-value.color-0 {
+  color: transparent;
+}
+
+.board-square-value.color-1 {
+  color: #cc66db;
+}
+
+.board-square-value.color-2 {
+  color: #4ec8f1;
+}
+
+.board-square-value.color-3 {
+  color: #1a083f;
+}
+
+.board-square-value.color-4 {
+  color: #236ff6;
+}
+
+.board-square-value.color-5 {
+  color: #7c25cc;
+}
+
+.board-square-value.color-6 {
+  color: #99a9d1;
+}
+
+.board-square-value.color-7 {
+  color: #f2c206;
+}
+
+.board-square-value.color-8 {
+  color: #2b3141; 
+}
+
+.board-row {
+  display: flex;
+}
+
+.board-square-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  float:left;
+  text-align:center;
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+  background-color: #d3e1e5/*#c7e7f2;*/
+}
+
+.board-square-inner.covered {
+  background-color: #2b3141;
+  border: 1px solid white;
+  cursor: pointer;
+  
+}
+
+.board-square-inner img {
+  padding: 4px;
+}
+
 /*************************************/
 /********** Progress Panel ***********/
 /*************************************/
