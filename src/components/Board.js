@@ -65,91 +65,45 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
         if (gameStatus === 'start') {resetBoardMap();}
     }, [boardSize, totalBombs, gameStatus]);
 
-    //locations is an array of [column, row] location arrays, value is # adjacent bombs of stepped on square (or 9 for bomb)
-    const stepSquare = (location, value) => {
-        console.log(location);
-        // location.forEach(for(){
-
-        // }
-        if (location[0] in boardMap && location[1] in boardMap[location[0]]) {
-            let newBoardMap = boardMap;
-            if (value === 9) {
-                updateGameStatus('lost');
-                //alert('You lose!');
-            } else if (value === 0) {
-                //expose clicked square
-                newBoardMap[location[0]][location[1]]['status'] = 'exposed';
-                //test top left square
-                if ((location[0]-1) in newBoardMap && (location[1]-1) in newBoardMap[(location[0]-1)]) {
-                    if (newBoardMap[(location[0]-1)][(location[1]-1)]['adjacent'] === 0 && newBoardMap[(location[0]-1)][(location[1]-1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]-1), (location[1]-1)], newBoardMap[(location[0]-1)][(location[1]-1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]-1)][(location[1]-1)]['status'] = 'exposed';
+    //cellsInfo is an array of objects with structure {location, value}
+    //location is an array with structure [column, row] for cell location to check
+    //value is # adjacent bombs of stepped on square (or 9 for bomb)
+    const stepSquare = (cellsInfo) => {
+        let newBoardMap = boardMap;
+        let checkNext = []; // array to hold location coordinates of cells adjacent to any 0 value squares
+        let tempCell = [];
+        cellsInfo.forEach(({cell, value}) => {
+            let col = parseInt(cell[0]);
+            let row = parseInt(cell[1]);
+            if ( typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
+                if (value === 9) {
+                    updateGameStatus('lost');
+                } else if (value === 0) {
+                    //expose clicked square
+                    newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                    for (let c = col-1; c <= col+1; c++) {
+                        for (let r = (row-1); r <= (row+1); r++) {
+                            if (typeof boardMap[c] != 'undefined' && typeof boardMap[c][r] != 'undefined') {
+                                if (boardMap[c][r]['status'] !== 'exposed') {
+                                    newBoardMap[c][r]['status'] = 'exposed';
+                                    tempCell = {cell: [c, r], value: boardMap[c][r]['adjacent']};
+                                    if (!checkNext.includes(tempCell)) {checkNext.push(tempCell);}
+                                    //stepSquare([(cell[0]-1), (cell[1]-1)], newBoardMap[(cell[0]-1)][(cell[1]-1)]['adjacent']);
+                                }
+                            }        
+                        }
                     }
+                    updateGameStatus('playing');              
+                } else {
+                    //expose clicked square
+                    newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                    updateGameStatus('playing');
                 }
-                //test top square
-                if ((location[0]) in newBoardMap && (location[1]-1) in newBoardMap[(location[0])]) {
-                    if (newBoardMap[(location[0])][(location[1]-1)]['adjacent'] === 0 && newBoardMap[(location[0])][(location[1]-1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]), (location[1]-1)], newBoardMap[(location[0])][(location[1]-1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0])][(location[1]-1)]['status'] = 'exposed';
-                    }
-                }
-                //test top right square
-                if ((location[0]+1) in newBoardMap && (location[1]-1) in newBoardMap[(location[0]+1)]) {
-                    if (newBoardMap[(location[0]+1)][(location[1]-1)]['adjacent'] === 0 && newBoardMap[(location[0]+1)][(location[1]-1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]+1), (location[1]-1)], newBoardMap[(location[0]+1)][(location[1]-1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]+1)][(location[1]-1)]['status'] = 'exposed';
-                    }
-                }
-                //test left square
-                if ((location[0]-1) in newBoardMap && (location[1]) in newBoardMap[(location[0]-1)]) {
-                    if (newBoardMap[(location[0]-1)][(location[1])]['adjacent'] === 0 && newBoardMap[(location[0]-1)][(location[1])]['status'] !== 'exposed') {
-                        stepSquare([(location[0]-1), (location[1])], newBoardMap[(location[0]-1)][(location[1])]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]-1)][(location[1])]['status'] = 'exposed';
-                    }
-                }
-                //test right square
-                if ((location[0]+1) in newBoardMap && (location[1]) in newBoardMap[(location[0]+1)]) {
-                    if (newBoardMap[(location[0]+1)][(location[1])]['adjacent'] === 0 && newBoardMap[(location[0]+1)][(location[1])]['status'] !== 'exposed') {
-                        stepSquare([(location[0]+1), (location[1])], newBoardMap[(location[0]+1)][(location[1])]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]+1)][(location[1])]['status'] = 'exposed';
-                    }
-                }
-                //test bottom left square
-                if ((location[0]-1) in newBoardMap && (location[1]+1) in newBoardMap[(location[0]-1)]) {
-                    if (newBoardMap[(location[0]-1)][(location[1]+1)]['adjacent'] === 0 && newBoardMap[(location[0]-1)][(location[1]+1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]-1), (location[1]+1)], newBoardMap[(location[0]-1)][(location[1]+1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]-1)][(location[1]+1)]['status'] = 'exposed';
-                    }
-                }
-                //test bottom square
-                if ((location[0]) in newBoardMap && (location[1]+1) in newBoardMap[(location[0])]) {
-                    if (newBoardMap[(location[0])][(location[1]+1)]['adjacent'] === 0 && newBoardMap[(location[0])][(location[1]+1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]), (location[1]+1)], newBoardMap[(location[0])][(location[1]+1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0])][(location[1]+1)]['status'] = 'exposed';
-                    }
-                }
-                //test top right square
-                if ((location[0]+1) in newBoardMap && (location[1]+1) in newBoardMap[(location[0]+1)]) {
-                    if (newBoardMap[(location[0]+1)][(location[1]+1)]['adjacent'] === 0 && newBoardMap[(location[0]+1)][(location[1]+1)]['status'] !== 'exposed') {
-                        stepSquare([(location[0]+1), (location[1]+1)], newBoardMap[(location[0]+1)][(location[1]+1)]['adjacent']);
-                    } else {
-                        newBoardMap[(location[0]+1)][(location[1]+1)]['status'] = 'exposed';
-                    }
-                }
-
-                setBoardMap(newBoardMap);
-                updateGameStatus('playing');
-            } else {
-                newBoardMap[location[0]][location[1]]['status'] = 'exposed';
-                updateGameStatus('playing');
             }
+        });
+        setBoardMap(newBoardMap);
+        if(checkNext.length > 0) {
+            stepSquare(checkNext);
         }
     }
 

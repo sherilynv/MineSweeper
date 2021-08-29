@@ -5,11 +5,14 @@ const BoardSquare = ({location, value, sqStatus, stepSquare}) => {
     
     const[squareStatus, setSquareStatus] = useState(sqStatus);
 
-    const exposeThisSquare = (location, value) => {
-        if (location === 'empty') {
+    const exposeThisSquare = (cell, value) => {
+        if (cell === 'empty') {
             return;
         } else {
-            stepSquare(location, value);
+            //let stepAdjacent = stepSquare([{cell, value}]); //stepAdjacent will return [] if value is 1-8, or will return adjacent squares to step on if value is 0
+            stepSquare([{cell, value}]);
+            // console.log(stepAdjacent);
+            //stepSquare(stepAdjacent);
             setSquareStatus(squareStatus);
         }
     }
