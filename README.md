@@ -1,10 +1,10 @@
 # MineSweeper
 React Mine Sweeper
 
-##Live Demo
+## Live Demo
 - Play live here: [...]
 
-##Local Installation
+## Local Installation
 <ul>
   <li>Requirements: Node >=10.16, npm >=5.6</li>
   <li>Clone repository</li>
