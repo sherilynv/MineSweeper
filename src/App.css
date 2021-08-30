@@ -181,8 +181,16 @@ header img {
 
 #game-board {
   position: relative;
-  width: 100%;
-  min-width: 400px;
+  overflow: scroll;
+  height: 100%;
+  margin: 30px auto 5px;
+}
+
+#boardMap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: auto;
 }
 
 #winner-message-container {
@@ -210,6 +218,8 @@ header img {
 }
 
 .board-difficulty {
+  position: absolute;
+  top: 20px;
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 20px;
@@ -324,4 +334,65 @@ header img {
   text-align:center;
   color: #d58dde;
   margin: 5px 0 20px;
+}
+
+@media screen and (max-width: 600px) {
+  #game-page-container {
+    flex-direction: column-reverse;
+  }
+
+  #tools-panel-container {
+    display: flex;
+    width: 100%;
+  }
+
+  #progress-panel-container {
+    display: flex;
+    width: 100%;
+  }
+
+  #reset-button-container {
+    margin: 0 10px 0 0;
+  }
+
+  #game-clock-container #bomb-counter-container {
+    margin: 0 5px;
+  }
+
+  .progress-label {
+    display: none;
+  }
+
+  .game-clock, .bomb-counter {
+    margin: 0 5px;
+    width: 100px;
+  }
+
+  #game-clock-container, #bomb-counter-container {
+    margin: 0;
+  }
+
+  #tools-panel-container {
+    padding: 0;
+  }
+
+  #content-flyout-container {
+    top: 150px;
+    left: 0px;
+    width: 100%;
+    border: 5px solid rgba(0,0,0,0.5);
+    border-radius: 20px; 
+  }
+
+  #welcome-container {
+    height: calc(65vh);
+  }
+
+  .board-difficulty {
+    top: 80px;
+  }
+
+  #game-board {
+    height: calc(70vh);
+  }
 }

@@ -214,7 +214,8 @@ const Board = () => {
                 <div id="board-panel-container">
                     <div id="game-board-container">
                         <h4 className="board-difficulty">{contextData.settings.difficulty}</h4>
-                        <div id="game-board">    
+                        <div id="game-board" style={{width: `${30*contextData.settings.boardSize[0]}px`}}>
+                            <div id="boardMap">
                             {Object.entries(boardMap).map(([col, rows]) => {
                                 let squaresRender = Object.entries(rows).map(([rw, cell]) => {
                                     let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
@@ -222,6 +223,7 @@ const Board = () => {
                                 });
                                 return (<div key={col} className="board-row">{squaresRender}</div>);
                             })}
+                            </div>
                             {contextData.currentGame.status === 'won' &&
                                 <div id="winner-message-container">
                                     <div className="congrats">

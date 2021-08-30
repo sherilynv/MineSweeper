@@ -19,7 +19,7 @@ const GameClock = ({clockInterval}) => {
 
     return (
         <div id="game-clock-container">
-            TIME
+            <span className="progress-label">TIME</span>
             <div className="game-clock">
                 {contextData.gameTime.toString()}
             </div>

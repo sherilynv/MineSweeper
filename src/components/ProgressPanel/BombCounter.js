@@ -5,7 +5,7 @@ const BombCounter = ({count}) => {
     
     return (
         <div id="bomb-counter-container">
-            BOMBS LEFT
+            <span className="progress-label">BOMBS LEFT</span>
             <div className="bomb-counter">
                 {count}
             </div>
