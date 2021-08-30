@@ -88,6 +88,7 @@ const Board = () => {
                 if (value === 9) {
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exploded';
                     contextData.updateGameStatus('lost');
+                    contextData.addGamePlayed(false);
                 } else if (value === 0) {
                     //expose clicked square
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
