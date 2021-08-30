@@ -9,6 +9,7 @@ const Board = () => {
 
     //boardMap holds map of bomb locations with [column][row] indices - value is integer representing # of adjacent bombs (or 9 if cell is a bomb itself)
     const [boardMap, setBoardMap] = useState({});
+    const [winnerName, setWinnerName] = useState('');
 
     const contextData = useContext(GameContext);
 
@@ -21,6 +22,16 @@ const Board = () => {
         winSound,
         { volume: 0.75 }
     );
+
+    //Handle high score form
+    const handleWinnerSubmit = (e) => {
+        e.preventDefault();
+        contextData.updateLeaders(winnerName);
+        contextData.updateGameStatus('start');
+    }
+    const onNameChange = (e) => {
+        setWinnerName(e.target.value);
+    }
 
     useEffect( () => {
         const resetBoardMap = () => {
@@ -160,17 +171,18 @@ const Board = () => {
                                 <div id="winner-message-container">
                                     <div className="congrats">
                                         <img src="/spekitOctopusWithWand.png"/>
-                                        {((contextData.gameTime < contextData.stats.leader.score) || (contextData.stats.leader.score === -1) )
+                                        {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) )
                                             ? <div className="winner-message">New High Score!</div>
                                             : <div className="winner-message">You won!</div>
                                         }
                                     </div>
-                                    {((contextData.gameTime < contextData.stats.leader.score) || (contextData.stats.leader.score === -1) ) && 
+                                    {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) ) && 
                                         <div className="new-high-score">
-                                            <form>
+                                            <form onSubmit={(e) => handleWinnerSubmit(e)}>
                                                 <div className="mb-2">
                                                     <label htmlFor="player-name">Enter name:</label>
-                                                    <input className="form-control" type="text" name="player-name" />
+                                                    <input className="form-control" type="text" value={winnerName} onChange={onNameChange} name="player-name" />
+                                                    <input type="submit" value="Submit" />
                                                 </div>
                                             </form>
                                         </div>

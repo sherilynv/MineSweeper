@@ -10,7 +10,7 @@ const GamePage = () => {
     // const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
     const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [5,5], totalBombs: 2, sound: true});
     const [sound, setSound] = useState(true);
-    const [stats, setStats] = useState({leader: {player: 'N/A', score: -1}, gamesPlayed: 0, gamesWon: 0});
+    const [stats, setStats] = useState({easyLeader: {player: 'N/A', score: -1}, mediumLeader: {player: 'N/A', score: -1}, hardLeader: {player: 'N/A', score: -1}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
     const [currentGame, setCurrentGame] = useState({bombsRemaining: 0, status: 'welcome'});
     const [gameTime, setGameTime] = useState(0);
@@ -34,6 +34,11 @@ const GamePage = () => {
         let tempStats = stats;
         tempStats.gamesPlayed++;
         {didWin && tempStats.gamesWon++}
+        setStats(tempStats);
+    }
+    const updateLeaders = (player) => { 
+        let tempStats = stats;
+        tempStats[settings.difficulty+'Leader'] = {player: player, score: gameTime};
         setStats(tempStats);
     }
 
@@ -81,7 +86,8 @@ const GamePage = () => {
         updateDifficulty: updateDifficulty,
         updateBombs: updateBombs,
         updateGameStatus: updateGameStatus,
-        setGameTime: setGameTime
+        setGameTime: setGameTime,
+        updateLeaders: updateLeaders
     }
     
     return (
