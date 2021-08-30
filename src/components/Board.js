@@ -4,6 +4,7 @@ import GameContext from '../context/GameContext';
 import useSound from 'use-sound';
 import plopSound from '../sounds/plop.mp3';
 import winSound from '../sounds/children-hooray.mp3';
+import bombSound from '../sounds/bomb.mp3';
 
 const Board = () => {
 
@@ -22,6 +23,12 @@ const Board = () => {
         winSound,
         { volume: 0.75 }
     );
+
+    const [playBomb] = useSound(
+        bombSound,
+        { volume: 0.75 }
+    );
+
 
     //Handle high score form
     const handleWinnerSubmit = (e) => {
@@ -117,38 +124,45 @@ const Board = () => {
         let newBoardMap = boardMap;
         let checkNext = []; // array to hold location coordinates of cells adjacent to any 0 value squares
         let tempCell = [];
-        cellsInfo.forEach(({cell, value}) => {
-            let col = parseInt(cell[0]);
-            let row = parseInt(cell[1]);
-            if ( typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
-                if (value === 9) {
-                    newBoardMap[cell[0]][cell[1]]['status'] = 'exploded';
-                    contextData.updateGameStatus('lost');
-                    contextData.addGamePlayed(false);
-                } else if (value === 0) {
-                    //expose clicked square
-                    newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
-                    {contextData.sound && playPlop()}
-                    for (let c = col-1; c <= col+1; c++) {
-                        for (let r = (row-1); r <= (row+1); r++) {
-                            if (typeof boardMap[c] != 'undefined' && typeof boardMap[c][r] != 'undefined') {
-                                if (boardMap[c][r]['status'] !== 'exposed') {
-                                    newBoardMap[c][r]['status'] = 'exposed';
-                                    tempCell = {cell: [c, r], value: boardMap[c][r]['adjacent']};
-                                    if (!checkNext.includes(tempCell)) {checkNext.push(tempCell);}
-                                }
-                            }        
+        try {
+            cellsInfo.forEach(({cell, value}) => {
+                let col = parseInt(cell[0]);
+                let row = parseInt(cell[1]);
+                if ( typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
+                    if (value === 9) {
+                        newBoardMap[cell[0]][cell[1]]['status'] = 'exploded';
+                        throw('lost');
+                    } else if (value === 0) {
+                        //expose clicked square
+                        newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                        {contextData.sound && playPlop()}
+                        for (let c = col-1; c <= col+1; c++) {
+                            for (let r = (row-1); r <= (row+1); r++) {
+                                if (typeof boardMap[c] != 'undefined' && typeof boardMap[c][r] != 'undefined') {
+                                    if (boardMap[c][r]['status'] !== 'exposed') {
+                                        newBoardMap[c][r]['status'] = 'exposed';
+                                        tempCell = {cell: [c, r], value: boardMap[c][r]['adjacent']};
+                                        if (!checkNext.includes(tempCell)) {checkNext.push(tempCell);}
+                                    }
+                                }        
+                            }
                         }
+                        contextData.updateGameStatus('playing');              
+                    } else {
+                        //expose clicked square
+                        newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                        {contextData.sound && playPlop()}
+                        contextData.updateGameStatus('playing');
                     }
-                    contextData.updateGameStatus('playing');              
-                } else {
-                    //expose clicked square
-                    newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
-                    {contextData.sound && playPlop()}
-                    contextData.updateGameStatus('playing');
                 }
+            });
+        } catch (error) {
+            if (error === 'lost') {
+                contextData.updateGameStatus('lost');
+                contextData.addGamePlayed(false);
+                {contextData.sound && playBomb()}
             }
-        });
+        }
         setBoardMap(newBoardMap);
         if(checkNext.length > 0) {
             stepSquare(checkNext);

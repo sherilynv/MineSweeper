@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import GameContext from '../../context/GameContext';
 import useSound from 'use-sound';
 import clickSound from '../../sounds/mouse-click.mp3';
-import bombSound from '../../sounds/bomb.mp3';
 
 const BoardSquare = ({location, value, sqStatus, stepSquare, stepAdjacent, updateSquareStatus}) => {
     
@@ -15,18 +14,10 @@ const BoardSquare = ({location, value, sqStatus, stepSquare, stepAdjacent, updat
         { volume: 0.25 }
     );
 
-    const [playBomb] = useSound(
-        bombSound,
-        { volume: 0.75 }
-    );
-
     const exposeThisSquare = (cell, value) => {
         if (cell === 'uncovered') {
             return;
         } else {
-            if (value === 9 ) {
-                {contextData.sound && playBomb()}
-            } 
             stepSquare([{cell, value}]);
         }
     }
@@ -40,7 +31,6 @@ const BoardSquare = ({location, value, sqStatus, stepSquare, stepAdjacent, updat
             updateSquareStatus(location, 'flagged');
             contextData.updateBombs('decrement');
         } else if (squareStatus === 'flagged') {
-            //setSquareStatus('covered');
             updateSquareStatus(location, 'covered');
             contextData.updateBombs('increment');
         }
