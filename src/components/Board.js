@@ -14,16 +14,15 @@ const Board = () => {
 
     const contextData = useContext(GameContext);
 
+    //UI sounds
     const [playPlop] = useSound(
         plopSound,
         { volume: 0.25 }
     );
-
     const [playWin] = useSound(
         winSound,
         { volume: 0.75 }
     );
-
     const [playBomb] = useSound(
         bombSound,
         { volume: 0.75 }
