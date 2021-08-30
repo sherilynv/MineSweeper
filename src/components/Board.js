@@ -87,7 +87,9 @@ const Board = () => {
                 }
             }
             setBoardMap(mapTemp);
+            //need to find a better way to refresh progress panel than calls below...
             contextData.setGameTime(0);
+            contextData.updateGameStatus('start');
         }
         if (contextData.currentGame.status === 'start') {resetBoardMap();}
     }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);
