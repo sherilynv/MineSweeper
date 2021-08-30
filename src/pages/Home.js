@@ -52,7 +52,7 @@ const GamePage = () => {
                 setSettings({difficulty: 'medium', boardSize: [16,16], totalBombs: 40, sound: settings.sound});
                 break;
             case 'hard':
-                setSettings({difficulty: 'hard', boardSize: [20,20], totalBombs: 85, sound: settings.sound});
+                setSettings({difficulty: 'hard', boardSize: [30,16], totalBombs: 99, sound: settings.sound});
                 break;
         }
         updateGameStatus('start');

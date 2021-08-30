@@ -44,9 +44,9 @@ const Board = () => {
             let n = 0;
             let bombCount;
             let pointers = {};
-            for (let column = 1; column <= contextData.settings.boardSize[0]; column++) {
+            for (let column = 1; column <= contextData.settings.boardSize[1]; column++) {
                 mapTemp[column] = {};
-                for (let row = 1; row <= contextData.settings.boardSize[1]; row++) {
+                for (let row = 1; row <= contextData.settings.boardSize[0]; row++) {
                     mapTemp[column][row] = {};
                     mapTemp[column][row]['status'] = 'covered';
                     n++;
@@ -157,6 +157,44 @@ const Board = () => {
         }     
     }
 
+    const stepAdjacent = (cell) => {
+        let col = parseInt(cell[0]);
+        let row = parseInt(cell[1]);
+        let tempCell = {};
+        let flagged = 0;
+        let bombs = 0;
+        let checkNext = [];
+        for (let c = col-1; c <= col+1; c++) {
+            for (let r = (row-1); r <= (row+1); r++) {
+                if ( c === col && r === row) { continue; }
+                if (typeof boardMap[c] != 'undefined' && typeof boardMap[c][r] != 'undefined') {
+                    if (boardMap[c][r]['status'] === 'flagged') {
+                        flagged++;
+                    } else if (boardMap[c][r]['status'] === 'covered') {
+                        tempCell = {cell: [c, r], value: boardMap[c][r]['adjacent']};
+                        if (!checkNext.includes(tempCell)) {checkNext.push(tempCell);}
+                    }
+                    if (boardMap[c][r]['adjacent'] === 9) {
+                        bombs++;
+                    }
+                }        
+            }
+        }
+        if (flagged >= bombs && checkNext.length > 0) {
+            stepSquare(checkNext);
+        }
+    }
+
+    const updateSquareStatus = (location, status) => {
+        let col = location[0];
+        let row = location[1];
+        let newBoardMap = boardMap;
+        if (typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
+            newBoardMap[col][row]['status'] = status;
+        }
+        setBoardMap(newBoardMap);
+    }
+
     if (Object.keys(boardMap).length !== 0) {
         return (
                 <div id="board-panel-container">
@@ -166,7 +204,7 @@ const Board = () => {
                             {Object.entries(boardMap).map(([col, rows]) => {
                                 let squaresRender = Object.entries(rows).map(([rw, cell]) => {
                                     let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
-                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || (contextData.currentGame.status === 'lost' && cell['status'] !== 'exploded')) ? 'exposed' : cell['status']} stepSquare={stepSquare}/>);
+                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || (contextData.currentGame.status === 'lost' && cell['status'] !== 'exploded')) ? 'exposed' : cell['status']} stepSquare={stepSquare} stepAdjacent={stepAdjacent} updateSquareStatus={updateSquareStatus}/>);
                                 });
                                 return (<div key={col} className="board-row">{squaresRender}</div>);
                             })}

@@ -15,9 +15,9 @@ const SettingsContent = () => {
             <h3 className="context-header">Game Settings</h3>
             <h6>DIFFICULTY</h6>
             <ul onChange={onChangeDifficulty}>
-                <input type="radio" value="easy" name="gender" checked={contextData.settings.difficulty === 'easy' ? true : false} /> Easy
-                <input type="radio" value="medium" name="gender" checked={contextData.settings.difficulty === 'medium' ? true : false} /> Medium
-                <input type="radio" value="hard" name="gender" checked={contextData.settings.difficulty === 'hard' ? true : false} /> Hard
+                <input type="radio" value="easy" name="gender" checked={contextData.settings.difficulty === 'easy' ? true : false} onChange={() => {}} /> Easy
+                <input type="radio" value="medium" name="gender" checked={contextData.settings.difficulty === 'medium' ? true : false} onChange={() => {}} /> Medium
+                <input type="radio" value="hard" name="gender" checked={contextData.settings.difficulty === 'hard' ? true : false} onChange={() => {}} /> Hard
             </ul>
             <h6>SOUND</h6>
             <ul>
