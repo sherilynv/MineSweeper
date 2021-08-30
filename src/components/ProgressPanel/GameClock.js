@@ -1,26 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import useInterval from '../../hooks/useInterval';
+import GameContext from '../../context/GameContext';
 
-const GameClock = ({clockInterval, status}) => {
-    
-    const [gameTime, setGameTime] = useState(0);
-    
+const GameClock = ({clockInterval}) => {
+
+    const contextData = useContext(GameContext);
+
     useEffect(() => {
-        if (status ==='start' || status ==='welcome') {
-            setGameTime(0);
+        if (contextData.currentGame.status ==='start' || contextData.currentGame.status ==='welcome') {
+            contextData.setGameTime(0);
         }
     }, [status])
 
     useInterval(() => {  
-        setGameTime(gameTime + 1);
+        contextData.setGameTime(contextData.gameTime + 1);
     }, clockInterval);
 
     return (
         <div id="game-clock-container">
             TIME
             <div className="game-clock">
-                {gameTime.toString()}
+                {contextData.gameTime.toString()}
             </div>
         </div>
     )
@@ -28,7 +29,6 @@ const GameClock = ({clockInterval, status}) => {
 
 GameClock.propTypes = {
     clockInterval: PropTypes.number,
-    status: PropTypes.string
 }
 
 

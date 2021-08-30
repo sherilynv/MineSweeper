@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h2><img src="/favicon.ico"/> Mine Sweeper <img src="/favicon.ico"/></h2>
+        <h2>Mine Sweeper</h2>
       </header>
       <Router>
         <Switch>
@@ -23,3 +23,5 @@ function App() {
 }
 
 export default App;
+
+//<img src="/favicon.ico"/>

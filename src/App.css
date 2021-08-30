@@ -112,6 +112,7 @@ header img {
   border-top: 5px solid rgba(0,0,0,0.5);
   border-bottom: 5px solid rgba(0,0,0,0.5);
   overflow: scroll;
+  z-index: 100;
 }
 
 .context-header {
@@ -171,9 +172,34 @@ header img {
 }
 
 #game-board {
+  position: relative;
   margin: 0 auto;
   width: 100%;
   max-width: 500px;
+}
+
+#winner-message-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+#winner-message-container img {
+  max-width: 100px;
+}
+
+.new-high-score {
+  text-align: left;
+  margin-left: 30px;
 }
 
 .board-difficulty {

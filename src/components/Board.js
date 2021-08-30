@@ -3,6 +3,7 @@ import BoardSquare from './BoardPanel/BoardSquare';
 import GameContext from '../context/GameContext';
 import useSound from 'use-sound';
 import plopSound from '../sounds/plop.mp3';
+import winSound from '../sounds/children-hooray.mp3';
 
 const Board = () => {
 
@@ -14,6 +15,11 @@ const Board = () => {
     const [playPlop] = useSound(
         plopSound,
         { volume: 0.25 }
+    );
+
+    const [playWin] = useSound(
+        winSound,
+        { volume: 0.75 }
     );
 
     useEffect( () => {
@@ -74,6 +80,22 @@ const Board = () => {
         if (contextData.currentGame.status === 'start') {resetBoardMap();}
     }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);
 
+    const checkWin = () => {
+        let counter = 0;
+        for (let col = 1; col <= Object.keys(boardMap).length; col++) {
+            for(let row = 1; row <= Object.keys(boardMap[col]).length; row++) {
+                if (boardMap[col][row]['status'] === 'exposed') {
+                    counter++;
+                }
+            }
+        }
+        if (counter == ((contextData.settings.boardSize[0] * contextData.settings.boardSize[1]) - contextData.settings.totalBombs)) {
+            {contextData.sound && playWin()}
+            contextData.updateGameStatus('won');
+            contextData.addGamePlayed(true);
+        }
+    }
+
     //cellsInfo is an array of objects with structure {location, value}
     //location is an array with structure [column, row] for cell location to check
     //value is # adjacent bombs of stepped on square (or 9 for bomb)
@@ -100,7 +122,6 @@ const Board = () => {
                                     newBoardMap[c][r]['status'] = 'exposed';
                                     tempCell = {cell: [c, r], value: boardMap[c][r]['adjacent']};
                                     if (!checkNext.includes(tempCell)) {checkNext.push(tempCell);}
-                                    //stepSquare([(cell[0]-1), (cell[1]-1)], newBoardMap[(cell[0]-1)][(cell[1]-1)]['adjacent']);
                                 }
                             }        
                         }
@@ -117,15 +138,17 @@ const Board = () => {
         setBoardMap(newBoardMap);
         if(checkNext.length > 0) {
             stepSquare(checkNext);
-        }
+        } else {
+            checkWin();
+        }     
     }
 
     if (Object.keys(boardMap).length !== 0) {
         return (
                 <div id="board-panel-container">
                     <div id="game-board-container">
-                        <div id="game-board">
-                            <h4 className="board-difficulty">{contextData.settings.difficulty}</h4>
+                        <h4 className="board-difficulty">{contextData.settings.difficulty}</h4>
+                        <div id="game-board">    
                             {Object.entries(boardMap).map(([col, rows]) => {
                                 let squaresRender = Object.entries(rows).map(([rw, cell]) => {
                                     let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
@@ -133,6 +156,27 @@ const Board = () => {
                                 });
                                 return (<div key={col} className="board-row">{squaresRender}</div>);
                             })}
+                            {contextData.currentGame.status === 'won' &&
+                                <div id="winner-message-container">
+                                    <div className="congrats">
+                                        <img src="/spekitOctopusWithWand.png"/>
+                                        {((contextData.gameTime < contextData.stats.leader.score) || (contextData.stats.leader.score === -1) )
+                                            ? <div className="winner-message">New High Score!</div>
+                                            : <div className="winner-message">You won!</div>
+                                        }
+                                    </div>
+                                    {((contextData.gameTime < contextData.stats.leader.score) || (contextData.stats.leader.score === -1) ) && 
+                                        <div className="new-high-score">
+                                            <form>
+                                                <div className="mb-2">
+                                                    <label htmlFor="player-name">Enter name:</label>
+                                                    <input className="form-control" type="text" name="player-name" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    }
+                                </div>
+                            }   
                         </div>
                     </div>
                 </div>
@@ -143,7 +187,7 @@ const Board = () => {
                 <div id="welcome-container">
                     <div className="welcome-message">
                         <img src="/spekitOctopusWithWand.png"/>
-                        <h4>Welcome to Mind Sweeper</h4>
+                        <h4>Welcome to Mine Sweeper</h4>
                         <p><em>{`(my coding challenge for the Spektacular Spekit)`}</em></p>
                         <p>{`Let's play!`}</p>
                     </div>

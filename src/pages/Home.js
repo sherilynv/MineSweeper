@@ -7,11 +7,13 @@ import GameContext from '../context/GameContext';
 const GamePage = () => {
     
     // State for game settings, stats, display and current game data
-    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
+    // const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
+    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [5,5], totalBombs: 2, sound: true});
     const [sound, setSound] = useState(true);
-    const [stats, setStats] = useState({leader: {player: 'No Leader Yet', score: 0}, gamesPlayed: 0, gamesWon: 0});
+    const [stats, setStats] = useState({leader: {player: 'N/A', score: -1}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
     const [currentGame, setCurrentGame] = useState({bombsRemaining: 0, status: 'welcome'});
+    const [gameTime, setGameTime] = useState(0);
 
     // Handle display mode updates between game and tools screens
     const updateDisplayMode = (newMode) => {
@@ -71,13 +73,15 @@ const GamePage = () => {
         stats: stats, 
         display: display,
         currentGame: currentGame,
+        gameTime: gameTime,
         updateDisplayMode: updateDisplayMode,
         checkLeaderboard: checkLeaderboard,
         addGamePlayed: addGamePlayed,
         setSound: setSound,
         updateDifficulty: updateDifficulty,
         updateBombs: updateBombs,
-        updateGameStatus: updateGameStatus
+        updateGameStatus: updateGameStatus,
+        setGameTime: setGameTime
     }
     
     return (

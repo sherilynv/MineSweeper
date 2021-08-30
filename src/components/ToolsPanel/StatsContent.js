@@ -16,7 +16,7 @@ const StatsContent = () => {
                 <div className="stats-content-container">
                     <h3 className="context-header">Game Stats</h3>
                     <ul>
-                        <li><strong>LEADER</strong>: {stats.leader.player} with {stats.leader.score} points</li>
+                        <li><strong>LEADER</strong>: {stats.leader.score === -1 ? `No winners yet`: `${stats.leader.player} in ${stats.leader.score} seconds`}</li>
                         <li><strong>TOTAL GAMES PLAYED</strong>: {stats.gamesPlayed}</li>
                         <li><strong>TOTAL GAMES WON</strong>: {stats.gamesWon}</li>
                         <li><strong>PERCENTAGE WON</strong>: {getPercentage(stats.gamesWon, stats.gamesPlayed)}</li>
