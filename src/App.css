@@ -181,9 +181,7 @@ header img {
 
 #game-board {
   position: relative;
-  margin: 0 auto;
   width: 100%;
-  max-width: 500px;
   min-width: 400px;
 }
 
@@ -270,6 +268,7 @@ header img {
 
 .board-row {
   display: flex;
+  justify-content: center;
 }
 
 .board-square-inner {
