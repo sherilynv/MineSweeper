@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import BoardSquare from './BoardPanel/BoardSquare';
 import GameContext from '../context/GameContext';
+import useSound from 'use-sound';
+import plopSound from '../sounds/plop.mp3';
 
 const Board = () => {
 
@@ -8,6 +10,11 @@ const Board = () => {
     const [boardMap, setBoardMap] = useState({});
 
     const contextData = useContext(GameContext);
+
+    const [playPlop] = useSound(
+        plopSound,
+        { volume: 0.25 }
+    );
 
     useEffect( () => {
         const resetBoardMap = () => {
@@ -79,10 +86,12 @@ const Board = () => {
             let row = parseInt(cell[1]);
             if ( typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
                 if (value === 9) {
+                    newBoardMap[cell[0]][cell[1]]['status'] = 'exploded';
                     contextData.updateGameStatus('lost');
                 } else if (value === 0) {
                     //expose clicked square
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                    {contextData.sound && playPlop()}
                     for (let c = col-1; c <= col+1; c++) {
                         for (let r = (row-1); r <= (row+1); r++) {
                             if (typeof boardMap[c] != 'undefined' && typeof boardMap[c][r] != 'undefined') {
@@ -99,6 +108,7 @@ const Board = () => {
                 } else {
                     //expose clicked square
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
+                    {contextData.sound && playPlop()}
                     contextData.updateGameStatus('playing');
                 }
             }
@@ -118,7 +128,7 @@ const Board = () => {
                             {Object.entries(boardMap).map(([col, rows]) => {
                                 let squaresRender = Object.entries(rows).map(([rw, cell]) => {
                                     let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
-                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || contextData.currentGame.status === 'lost') ? 'exposed' : cell['status']} stepSquare={stepSquare}/>);
+                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || (contextData.currentGame.status === 'lost' && cell['status'] !== 'exploded')) ? 'exposed' : cell['status']} stepSquare={stepSquare}/>);
                                 });
                                 return (<div key={col} className="board-row">{squaresRender}</div>);
                             })}

@@ -8,6 +8,7 @@ const GamePage = () => {
     
     // State for game settings, stats, display and current game data
     const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
+    const [sound, setSound] = useState(true);
     const [stats, setStats] = useState({leader: {player: 'No Leader Yet', score: 0}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
     const [currentGame, setCurrentGame] = useState({bombsRemaining: 0, status: 'welcome'});
@@ -35,11 +36,6 @@ const GamePage = () => {
     }
 
     // Handle settings updates
-    const updateSound = (value) => { // value is bool
-        let tempSettings = settings;
-        tempSettings.sound = value;
-        setSettings(tempSettings);
-    }
     const updateDifficulty = (newDifficulty) => {
         switch(newDifficulty) {
             case 'easy':
@@ -71,13 +67,14 @@ const GamePage = () => {
     // data to be passed to components via GameContext context hook
     const contextData = {
         settings: settings,
+        sound: sound,
         stats: stats, 
         display: display,
         currentGame: currentGame,
         updateDisplayMode: updateDisplayMode,
         checkLeaderboard: checkLeaderboard,
         addGamePlayed: addGamePlayed,
-        updateSound: updateSound,
+        setSound: setSound,
         updateDifficulty: updateDifficulty,
         updateBombs: updateBombs,
         updateGameStatus: updateGameStatus

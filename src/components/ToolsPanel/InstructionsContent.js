@@ -8,7 +8,7 @@ const InstructionsContent = () => {
                 <h5>Desktop</h5>
                     <ul>
                         <li>Left-click an empty square to reveal it.</li>
-                        <li>Right-click (or Ctrl+click) an empty square to flag it.</li>
+                        <li>Right-click an empty square to flag it.</li>
                         <li>Double-click a revealed square to reveal its adjacent squares.</li>
                     </ul>
                 <h5>Mobile</h5>

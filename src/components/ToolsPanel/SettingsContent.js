@@ -7,7 +7,7 @@ const SettingsContent = () => {
     
     return (
     <GameContext.Consumer>
-        {({settings, updateSound, updateDifficulty}) => (        
+        {({sound, settings, setSound, updateDifficulty}) => (        
             <div className="settings-content-container">
                 <h3 className="context-header">Game Settings</h3>
                 <p>Adjust game difficulty and sound settings below.</p>
@@ -19,7 +19,7 @@ const SettingsContent = () => {
                     </ButtonGroup>
                 </div>
                 <div>
-                    <BootstrapSwitchButton checked={settings.sound} onlabel='Sound On' offlabel='Sound Off' onstyle="primary" offstyle="info" onChange={(checked) => {updateSound(checked)}}/>
+                    <BootstrapSwitchButton checked={sound} onlabel='Sound On' offlabel='Sound Off' onstyle="primary" offstyle="info" onChange={(checked) => {console.log(checked); setSound(checked)}}/>
                 </div>
             </div>
         )}
