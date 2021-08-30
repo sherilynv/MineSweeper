@@ -1,26 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import PropsTypes from 'prop-types';
+import React, {useContext, useEffect, useState} from 'react';
 import BoardSquare from './BoardPanel/BoardSquare';
+import GameContext from '../context/GameContext';
 
-const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}) => {
+const Board = () => {
 
     //boardMap holds map of bomb locations with [column][row] indices - value is integer representing # of adjacent bombs (or 9 if cell is a bomb itself)
     const [boardMap, setBoardMap] = useState({});
 
+    const contextData = useContext(GameContext);
+
     useEffect( () => {
         const resetBoardMap = () => {
             let randomRange = [];
-            for (let i=1; i <= (boardSize[0] * boardSize[1]); i++) {
+            for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
                 randomRange.push(i);
             }
-            let randomBombs = randomRange.sort(() => .5 - Math.random()).slice(0,totalBombs);
+            let randomBombs = randomRange.sort(() => .5 - Math.random()).slice(0,contextData.settings.totalBombs);
             let mapTemp = {};
             let n = 0;
             let bombCount;
             let pointers = {};
-            for (let column = 1; column <= boardSize[0]; column++) {
+            for (let column = 1; column <= contextData.settings.boardSize[0]; column++) {
                 mapTemp[column] = {};
-                for (let row = 1; row <= boardSize[1]; row++) {
+                for (let row = 1; row <= contextData.settings.boardSize[1]; row++) {
                     mapTemp[column][row] = {};
                     mapTemp[column][row]['status'] = 'covered';
                     n++;
@@ -31,26 +33,26 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
                     } else {
                         if (column > 1) {
                             if (row > 1) {
-                                pointers[n].push(n - boardSize[0] - 1);
+                                pointers[n].push(n - contextData.settings.boardSize[0] - 1);
                             }
-                            pointers[n].push(n - boardSize[0]);
-                            if (row < boardSize[0]) {
-                                pointers[n].push(n - boardSize[0] + 1);
+                            pointers[n].push(n - contextData.settings.boardSize[0]);
+                            if (row < contextData.settings.boardSize[0]) {
+                                pointers[n].push(n - contextData.settings.boardSize[0] + 1);
                             }
                         }
                         if (row > 1) {
                             pointers[n].push(n - 1);
                         }
-                        if (row < boardSize[0]) {
+                        if (row < contextData.settings.boardSize[0]) {
                             pointers[n].push(n + 1);
                         }
-                        if (column < boardSize[1]) {
+                        if (column < contextData.settings.boardSize[1]) {
                             if (row > 1) {
-                                pointers[n].push(n + boardSize[0] - 1);
+                                pointers[n].push(n + contextData.settings.boardSize[0] - 1);
                             }
-                            pointers[n].push(n + boardSize[0]);
-                            if (row < boardSize[0]) {
-                                pointers[n].push(n + boardSize[0] + 1);
+                            pointers[n].push(n + contextData.settings.boardSize[0]);
+                            if (row < contextData.settings.boardSize[0]) {
+                                pointers[n].push(n + contextData.settings.boardSize[0] + 1);
                             }
                         }
                         pointers[n].forEach(pointer => {
@@ -62,8 +64,8 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
             }
             setBoardMap(mapTemp);
         }
-        if (gameStatus === 'start') {resetBoardMap();}
-    }, [boardSize, totalBombs, gameStatus]);
+        if (contextData.currentGame.status === 'start') {resetBoardMap();}
+    }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);
 
     //cellsInfo is an array of objects with structure {location, value}
     //location is an array with structure [column, row] for cell location to check
@@ -77,7 +79,7 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
             let row = parseInt(cell[1]);
             if ( typeof boardMap[col] != 'undefined' && typeof boardMap[col][row] != 'undefined') {
                 if (value === 9) {
-                    updateGameStatus('lost');
+                    contextData.updateGameStatus('lost');
                 } else if (value === 0) {
                     //expose clicked square
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
@@ -93,11 +95,11 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
                             }        
                         }
                     }
-                    updateGameStatus('playing');              
+                    contextData.updateGameStatus('playing');              
                 } else {
                     //expose clicked square
                     newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
-                    updateGameStatus('playing');
+                    contextData.updateGameStatus('playing');
                 }
             }
         });
@@ -112,11 +114,11 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
                 <div id="board-panel-container">
                     <div id="game-board-container">
                         <div id="game-board">
-                            <h4 className="board-difficulty">{difficulty}</h4>
+                            <h4 className="board-difficulty">{contextData.settings.difficulty}</h4>
                             {Object.entries(boardMap).map(([col, rows]) => {
                                 let squaresRender = Object.entries(rows).map(([rw, cell]) => {
-                                    let key = parseInt(((col-1)*boardSize[0])) + parseInt(rw);
-                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(gameStatus === 'won' || gameStatus === 'lost') ? 'exposed' : cell['status']} stepSquare={stepSquare}/>);
+                                    let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
+                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || contextData.currentGame.status === 'lost') ? 'exposed' : cell['status']} stepSquare={stepSquare}/>);
                                 });
                                 return (<div key={col} className="board-row">{squaresRender}</div>);
                             })}
@@ -138,14 +140,6 @@ const Board = ({difficulty, boardSize, totalBombs, gameStatus, updateGameStatus}
             </div>
         );
     }
-}
-
-Board.propTypes = {
-    difficulty: PropsTypes.string,
-    boardSize: PropsTypes.array,
-    totalBombs: PropsTypes.number,
-    gameStatus: PropsTypes.string,
-    updateGameStatus: PropsTypes.func
 }
 
 export default Board;

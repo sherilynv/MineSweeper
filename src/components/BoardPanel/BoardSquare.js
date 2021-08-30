@@ -1,19 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
+import GameContext from '../../context/GameContext';
+
 
 const BoardSquare = ({location, value, sqStatus, stepSquare}) => {
     
     const[squareStatus, setSquareStatus] = useState(sqStatus);
+    const contextData = useContext(GameContext);
 
     const exposeThisSquare = (cell, value) => {
-        if (cell === 'empty') {
+        if (cell === 'uncovered') {
             return;
         } else {
-            //let stepAdjacent = stepSquare([{cell, value}]); //stepAdjacent will return [] if value is 1-8, or will return adjacent squares to step on if value is 0
             stepSquare([{cell, value}]);
-            // console.log(stepAdjacent);
-            //stepSquare(stepAdjacent);
-            setSquareStatus(squareStatus);
+        }
+    }
+
+    const flagThisSquare = () => {
+        
+        if (squareStatus === 'uncovered') {
+            return;
+        } else if (squareStatus === 'covered') {
+            setSquareStatus('flagged');
+            contextData.updateBombs('decrement');
+        } else if (squareStatus === 'flagged') {
+            setSquareStatus('covered');
+            contextData.updateBombs('increment');
         }
     }
 
@@ -22,8 +34,8 @@ const BoardSquare = ({location, value, sqStatus, stepSquare}) => {
     }, [sqStatus]);
 
     return (
-        <div key={sqStatus} className="board-square-container" onClick={squareStatus === 'covered' ? () => exposeThisSquare(location, value) : () => exposeThisSquare('empty')}>
-            {squareStatus === 'covered' ? <div className="board-square-inner covered"><div className="board-square-value"></div></div> : <div className="board-square-inner"><div className={`board-square-value color-${value}`}>{value === 9 ? <img src="/spekitLogoMark.png" width="100%" height="auto"/> : value}</div></div>}
+        <div key={sqStatus} className="board-square-container" onClick={squareStatus === 'covered' ? () => exposeThisSquare(location, value) : () => exposeThisSquare('uncovered')} onContextMenu={(e) => {e.preventDefault(); flagThisSquare();}}>
+            {squareStatus === 'covered' ? <div className="board-square-inner covered"><div className="board-square-value"></div></div> : squareStatus === 'flagged' ? <div className="board-square-inner covered"><div className="board-square-value"><img src="/flag.png" width="100%" height="auto"/></div></div> : <div className="board-square-inner"><div className={`board-square-value color-${value}`}>{value === 9 ? <img src="/spekitLogoMark.png" width="100%" height="auto"/> : value}</div></div>}
         </div>
     );
 
