@@ -15,7 +15,7 @@ const InstructionsContent = () => {
                     <ul>
                         <li>Tap an empty square to reveal it.</li>
                         <li>Long-press an empty square to flag it.</li>
-                        <li>Tap a number to reveal its adjacent squares.</li>
+                        <li>Long-press a revealed square to reveal its adjacent squares.</li>
                     </ul>
         </div>
     )

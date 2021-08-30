@@ -87,6 +87,7 @@ const Board = () => {
                 }
             }
             setBoardMap(mapTemp);
+            contextData.setGameTime(0);
         }
         if (contextData.currentGame.status === 'start') {resetBoardMap();}
     }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);

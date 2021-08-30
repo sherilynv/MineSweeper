@@ -137,6 +137,14 @@ header img {
   color: #cccccc;
 }
 
+.settings-content-container h6 {
+  margin-top: 30px;
+}
+
+.settings-content-container input {
+  margin: 0 10px;
+}
+
 /*************************************/
 /********** Board Panel ***********/
 /*************************************/
@@ -176,6 +184,7 @@ header img {
   margin: 0 auto;
   width: 100%;
   max-width: 500px;
+  min-width: 400px;
 }
 
 #winner-message-container {
@@ -210,8 +219,7 @@ header img {
 
 .board-square-container {
   display: inline;
-  width: 10%;
-  max-width: 50px;
+  min-width: 30px;
 }
 .board-square-container:after {
   content: "";

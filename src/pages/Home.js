@@ -8,7 +8,7 @@ const GamePage = () => {
     
     // State for game settings, stats, display and current game data
     // const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
-    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [5,5], totalBombs: 2, sound: true});
+    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [9,9], totalBombs: 10, sound: true});
     const [sound, setSound] = useState(true);
     const [stats, setStats] = useState({easyLeader: {player: 'N/A', score: -1}, mediumLeader: {player: 'N/A', score: -1}, hardLeader: {player: 'N/A', score: -1}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
@@ -46,15 +46,16 @@ const GamePage = () => {
     const updateDifficulty = (newDifficulty) => {
         switch(newDifficulty) {
             case 'easy':
-                setSettings({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: settings.sound});
+                setSettings({difficulty: 'easy', boardSize: [9,9], totalBombs: 10, sound: settings.sound});
                 break;
             case 'medium':
-                setSettings({difficulty: 'medium', boardSize: [15,15], totalBombs: 35, sound: settings.sound});
+                setSettings({difficulty: 'medium', boardSize: [16,16], totalBombs: 40, sound: settings.sound});
                 break;
             case 'hard':
-                setSettings({difficulty: 'hard', boardSize: [20,20], totalBombs: 70, sound: settings.sound});
+                setSettings({difficulty: 'hard', boardSize: [20,20], totalBombs: 75, sound: settings.sound});
                 break;
         }
+        updateGameStatus('start');
     }
 
     // Handle currentGame state updates

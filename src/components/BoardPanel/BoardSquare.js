@@ -60,7 +60,7 @@ const BoardSquare = ({location, value, sqStatus, stepSquare}) => {
     }, [sqStatus]);
 
     return (
-        <div key={sqStatus} className="board-square-container" onClick={squareStatus === 'covered' ? () => exposeThisSquare(location, value) : () => exposeThisSquare('uncovered')} onContextMenu={(e) => {e.preventDefault(); flagThisSquare();}}>
+        <div key={sqStatus} className="board-square-container" style={{width: `${(1/contextData.settings.boardSize[0])*100}%`, maxWidth: `${500/contextData.settings.boardSize[0]}px`}} onClick={squareStatus === 'covered' ? () => exposeThisSquare(location, value) : () => exposeThisSquare('uncovered')} onContextMenu={(e) => {e.preventDefault(); flagThisSquare();}}>
             {squareStatus === 'covered' ? <div className="board-square-inner covered"><div className="board-square-value"></div></div> 
                 : squareStatus === 'flagged' ? <div className="board-square-inner covered"><div className="board-square-value"><img src="/flag.png" width="100%" height="auto"/></div></div>
                 : squareStatus === 'exploded' ? <div className="board-square-inner"><div className="board-square-value"><img src="/spekitLogoExplode.png" width="100%" height="auto"/></div></div>

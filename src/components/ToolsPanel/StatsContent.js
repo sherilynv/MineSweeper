@@ -7,7 +7,7 @@ const StatsContent = () => {
         if (denominator <= 0) {
             return '0%';
         }
-        return (((numerator/denominator)*100).toString().concat('%'));
+        return (((numerator/denominator)*100).toFixed().toString().concat('%'));
     }
 
     return (
