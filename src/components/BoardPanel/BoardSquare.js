@@ -51,8 +51,8 @@ const BoardSquare = ({location, value, sqStatus, stepSquare, stepAdjacent, updat
         <div key={sqStatus} className="board-square-container" style={{width: `${(1/contextData.settings.boardSize[0])*100}%`, maxWidth: `${500/contextData.settings.boardSize[0]}px`}} onClick={squareStatus === 'covered' ? () => exposeThisSquare(location, value) : () => exposeThisSquare('uncovered')} onContextMenu={(e) => {e.preventDefault(); flagThisSquare();}}>
             {squareStatus === 'covered' ? <div className="board-square-inner covered"><div className="board-square-value"></div></div> 
                 : squareStatus === 'flagged' ? <div className="board-square-inner covered"><div className="board-square-value"><img src="/flag.png" width="100%" height="auto"/></div></div>
-                : squareStatus === 'exploded' ? <div className="board-square-inner"><div className="board-square-value"><img src="/spekitLogoExplode.png" width="100%" height="auto"/></div></div>
-                : <div className="board-square-inner" onContextMenu={() => revealAdjacent(contextData.currentGame.status)}><div className={`board-square-value color-${value}`}>{value === 9 ? <img src="/spekitLogoMark.png" width="100%" height="auto"/> : value}</div></div>}
+                : squareStatus === 'exploded' ? <div className="board-square-inner"><div className="board-square-value"><img src="/octoSplosion.png" width="100%" height="auto"/></div></div>
+                : <div className="board-square-inner" onContextMenu={() => revealAdjacent(contextData.currentGame.status)}><div className={`board-square-value color-${value}`}>{value === 9 ? <img src="/octoBomb.png" width="100%" height="auto"/> : value}</div></div>}
         </div>
     );
 

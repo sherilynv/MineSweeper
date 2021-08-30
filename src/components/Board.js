@@ -258,7 +258,7 @@ const Board = () => {
                         <img src="/spekitOctopusWithWand.png"/>
                         <h4>Welcome to Mine Sweeper</h4>
                         <p><em>{`(my coding challenge for the Spektacular Spekit)`}</em></p>
-                        <p>{`Let's play!`}</p>
+                        <p>{`Avoid stepping on my friends to win!`}</p>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ const InstructionsContent = () => {
     
     return (
         <div className="instructions-content-container">
-            <h3 className="context-header">Game Instructions</h3>
+            <h3 className="context-header">Game Controls</h3>
                 <h5>Desktop</h5>
                     <ul>
                         <li>Left-click an empty square to reveal it.</li>
