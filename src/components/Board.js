@@ -7,6 +7,7 @@ import useSound from 'use-sound';
 import plopSound from '../sounds/plop.mp3';
 import winSound from '../sounds/children-hooray.mp3';
 import bombSound from '../sounds/squish.mp3';
+import seedrandom from 'seedrandom';
 
 const Board = () => {
 
@@ -39,12 +40,13 @@ const Board = () => {
             let n = 0;
             let bombCount;
             let pointers = {};
+            let generator = seedrandom('seed_'+Math.random());
             
             // get select as many random positions (as array of numberical keys) as there are total bombs
             for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
                 randomRange.push(i);
             }
-            let randomBombs = randomRange.sort(() => .5 - Math.random()).slice(0,contextData.settings.totalBombs);
+            let randomBombs = randomRange.sort(() => .5 - generator()).slice(0,contextData.settings.totalBombs);
             
             // assign to each individual square in board map properties of status (all re-set to covered) and adjacent (integer representing # of adjacent bombs - or 9 if cell is a bomb itself)
             for (let column = 1; column <= contextData.settings.boardSize[1]; column++) {
