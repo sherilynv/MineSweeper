@@ -2,8 +2,7 @@
 React Mine Sweeper game for Spekit coding challenge
 
 ## Live Demo
-- Play live here: [...]
-- (Staging environment here: [...])
+- Play live here: [https://limitless-stream-58486.herokuapp.com/]
 
 ## Local Installation
 - Requirements: Node >=10.16, npm >=5.6
@@ -30,7 +29,7 @@ React Mine Sweeper game for Spekit coding challenge
 - app re-builds <a href="http://minesweeperonline.com/">this site</a> from scratch... at least the intent of this site
 - app is re-designed with personalized styling and fonts - with a nod to the Spekit mascot and color scheme ;)
 - <a href="https://github.com/sherilynv/MineSweeper">GitHub repo link</a> included
-- Hosted live <a href="">here</a>
+- Hosted live <a href="https://limitless-stream-58486.herokuapp.com/">here</a>
 
 ### Features Included
 - Left menu displays Settings, Stats and Controls
