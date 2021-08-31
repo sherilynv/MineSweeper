@@ -25,7 +25,7 @@ React Mine Sweeper game for Spekit coding challenge
 - sound effects downloaded from <a href="https://freesound.org/">Free Sound</a>
 - (see package.json for full details)
 
-## Project Requirements Met
+## Project Requirements
 - app uses ReactJS
 - app re-builds <a href="http://minesweeperonline.com/">this site</a> from scratch... at least the intent of this site
 - app is re-designed with personalized styling and fonts - with a nod to the Spekit mascot and color scheme ;)
