@@ -104,7 +104,7 @@ const Board = () => {
             resetBoardMap();
         }
 
-    }, [contextData.currentGame.status]);
+    }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);
 
     const checkWin = () => {
         let counter = 0;
