@@ -35,25 +35,32 @@ const Board = () => {
         // handles loading of board map with game data on game reset
         const resetBoardMap = () => {
             let randomRange = [];
-            for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
-                randomRange.push(i);
-            }
-            let randomBombs = randomRange.sort(() => .5 - Math.random()).slice(0,contextData.settings.totalBombs);
             let mapTemp = {};
             let n = 0;
             let bombCount;
             let pointers = {};
+            
+            // get select as many random positions (as array of numberical keys) as there are total bombs
+            for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
+                randomRange.push(i);
+            }
+            let randomBombs = randomRange.sort(() => .5 - Math.random()).slice(0,contextData.settings.totalBombs);
+            
+            // assign to each individual square in board map properties of status (all re-set to covered) and adjacent (integer representing # of adjacent bombs - or 9 if cell is a bomb itself)
             for (let column = 1; column <= contextData.settings.boardSize[1]; column++) {
                 mapTemp[column] = {};
                 for (let row = 1; row <= contextData.settings.boardSize[0]; row++) {
-                    mapTemp[column][row] = {};
-                    mapTemp[column][row]['status'] = 'covered';
                     n++;
                     pointers[n] = [];
                     bombCount = 0;
+                    mapTemp[column][row] = {};
+                    mapTemp[column][row]['status'] = 'covered';
+                    // if this square is a bomb, assign adjacent value of 9
                     if (randomBombs.includes(n)) {
                         mapTemp[column][row]['adjacent'] = 9;
-                    } else {
+                    } else { 
+                        
+                        // store all valid adjacent squares by numerical key location n
                         if (column > 1) {
                             if (row > 1) {
                                 pointers[n].push(n - contextData.settings.boardSize[0] - 1);
@@ -78,6 +85,8 @@ const Board = () => {
                                 pointers[n].push(n + contextData.settings.boardSize[0] + 1);
                             }
                         }
+
+                        // count number of adjacent bombs this square and assign to adjacent property
                         pointers[n].forEach(pointer => {
                             if (randomBombs.includes(pointer)) { bombCount++; }
                         })
@@ -86,12 +95,16 @@ const Board = () => {
                 }
             }
             setBoardMap(mapTemp);
-            //need to find a better way to refresh progress panel than calls below...
+            //currently the calls below are needed to refresh render... explore better methods here
             contextData.setGameTime(0);
             contextData.updateGameStatus('start');
         }
-        if (contextData.currentGame.status === 'start') {resetBoardMap();}
-    }, [contextData.settings.boardSize, contextData.settings.totalBombs, contextData.currentGame.status]);
+        
+        if (contextData.currentGame.status === 'start') {
+            resetBoardMap();
+        }
+
+    }, [contextData.currentGame.status]);
 
     const checkWin = () => {
         let counter = 0;
