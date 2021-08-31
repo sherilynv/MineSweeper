@@ -7,7 +7,7 @@ const ToolsButton = ({mode, icon, selected}) => {
     return (
         <GameContext.Consumer>
             {({updateDisplayMode}) => (
-                <div className={selected ? 'tools-button selected' : 'tools-button'} onClick={() => updateDisplayMode(mode)}>
+                <div data-testid="tools-button" className={selected ? 'tools-button selected' : 'tools-button'} onClick={() => updateDisplayMode(mode)}>
                     {icon}
                 </div>
             )}

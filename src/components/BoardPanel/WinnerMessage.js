@@ -6,13 +6,13 @@ const WinnerMessage = () => {
     
     const [winnerName, setWinnerName] = useState('');
 
-    const contextData = useContext(GameContext);
+    const context = useContext(GameContext);
 
     //Handle high score form
     const handleWinnerSubmit = (e) => {
         e.preventDefault();
-        contextData.updateLeaders(winnerName);
-        contextData.updateGameStatus('start');
+        context.updateLeaders(winnerName);
+        context.updateGameStatus('start');
     }
     const onNameChange = (e) => {
         setWinnerName(e.target.value);
@@ -22,12 +22,12 @@ const WinnerMessage = () => {
         <div id="winner-message-container">
             <div className="congrats">
                 <img src="/spekitOctopusWithWand.png"/>
-                {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) )
+                {((context.gameTime < context.stats[`${context.settings.difficulty}Leader`].score) || (context.stats[`${context.settings.difficulty}Leader`].score === -1) )
                     ? <div className="winner-message">New High Score!</div>
                     : <div className="winner-message">You won!</div>
                 }
             </div>
-            {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) ) && 
+            {((context.gameTime < context.stats[`${context.settings.difficulty}Leader`].score) || (context.stats[`${context.settings.difficulty}Leader`].score === -1) ) && 
                 <div className="new-high-score">
                     <form onSubmit={(e) => handleWinnerSubmit(e)}>
                         <div className="mb-2">
