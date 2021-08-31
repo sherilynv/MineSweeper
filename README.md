@@ -9,8 +9,8 @@ React Mine Sweeper game for Spekit coding challenge
 - Clone repository
 - Install required node modules: run <pre>npm install</pre> from root project directory
 - Run <pre>npm start</pre> to run locally on port 3000 - (http://localhost:3000)
-- Run <pre>npm test</pre> to run tests (see notes below)
-- Run <pre>npm coverage</pre> to see test coverage
+- Run <pre>npm run test</pre> to run tests (see notes below)
+- Run <pre>npm run coverage</pre> to see test coverage
 
 ### Testing Notes
 - App currently only includes 4 simple tests to show the trajectory, testing with context

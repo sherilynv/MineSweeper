@@ -5,6 +5,6 @@ import App from './App';
 
 test('renders welcome message on app load', () => {
     render(<App />);
-    const linkElement = screen.getByText(/Welcome to Mine Sweeper/i);
+    const linkElement = screen.getByText(/Welcome to Octo-Sweeper/i);
     expect(linkElement).toBeInTheDocument();
 });
