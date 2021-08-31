@@ -10,19 +10,20 @@ React Mine Sweeper game for Spekit coding challenge
 - Clone repository
 - Install required node modules: run <pre>npm install</pre> from root project directory
 - Run <pre>npm start</pre> to run locally on port 3000 - (http://localhost:3000)
-- Run <pre>npm test</pre> to run tests (see notes in Testing Notes below)
-- Run <pre>npm coverage</pre> to see test coverage (see notes in Testing Notes below)
+- Run <pre>npm test</pre> to run tests (see notes below)
+- Run <pre>npm coverage</pre> to see test coverage
+
+### Testing Notes
+- App currently only includes 4 simple tests to show the trajectory, testing with context
+- Would like to build out more tests with additional time
+- For this reason, current coverage is not wide, but will grow with additional tests
 
 ## Technologies Used
 - Built from create-react-app as base
 - Dev tool additions: eslint, react testing-library, plus plugin dependecies
 - Prod tools: bootstrap & fontawesome modules for styling, react prop-types for data type validation, react-router-dom for routing, <a href="https://www.npmjs.com/package/use-sound">use-sound</a> for sound effect support
+- sound effects downloaded from <a href="https://freesound.org/">Free Sound</a>
 - (see package.json for full details)
-
-## Testing Notes
-- App currently only includes 4 simple tests to show the trajectory, testing with context
-- Would like to build out more tests with additional time
-- For this reason, current coverage is not wide, but will grow with additional tests
 
 ## Project Requirements Met
 - app uses ReactJS
@@ -47,7 +48,7 @@ React Mine Sweeper game for Spekit coding challenge
 
 ### Features Not Yet Included
 time did not allow for the following...
-- customizable board size and mine count: code is set up to support this, just need to add UI
+- customizable board size and mine count: code is set up to support this, just need to add UI to control state
 - database connection: with more time would like to add a db connection or (minimally) a file write to save high scores over time... currently stored in memory and clears on refresh
 - ability to use '?' markers
 - display adjustments (e.g., dark mode)
@@ -63,3 +64,5 @@ time did not allow for the following...
 - more thorough unit and application testing needs to be implemented
 - re-consider state management options selected - GameContext is used heavily since so many components are inter-related - this might be causing some sluggishness in squares re-rendering more than necessary, need more time here
 - currently utilizing site-wide App.css file for all styling... would want to localize some to specific components in re-factor
+- Error handling and data type checking handled as I coded, but with more time, I would like to go through more thoroughly here
+- noticed a couple of edge cases that are currently buggy - 1) bomb counter not accurate if user had flagged squares inaccurately then reveals adjacent that exposes these (should be straightforward... just ran out of time to handle), 2) sometimes reveal adjacent is a bit buggy when reavealing a square that was actually a bomb (usually triggers game loss, but not always... need to investigate with more time)
