@@ -185,7 +185,14 @@ header img {
   overflow: scroll;
   height: 100%;
   margin: 30px auto 5px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */  
 }
+
+#game-board::-webkit-scrollbar {
+  display: none;
+}
+
 
 #boardMap {
   position: absolute;
