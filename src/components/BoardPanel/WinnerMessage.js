@@ -29,7 +29,7 @@ const WinnerMessage = () => {
             </div>
             {((context.gameTime < context.stats[`${context.settings.difficulty}Leader`].score) || (context.stats[`${context.settings.difficulty}Leader`].score === -1) ) && 
                 <div className="new-high-score">
-                    <form onSubmit={(e) => handleWinnerSubmit(e)}>
+                    <form data-testid="high-score-form" onSubmit={(e) => handleWinnerSubmit(e)}>
                         <div className="mb-2">
                             <label htmlFor="player-name">Enter name:</label>
                             <input className="form-control" type="text" value={winnerName} onChange={onNameChange} name="player-name" />
