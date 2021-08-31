@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Handles rendering of initial welcome message
 const Welcome = () => {
 
     return (

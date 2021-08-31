@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import BoardSquare from './BoardPanel/BoardSquare';
+import BoardMap from './BoardPanel/BoardMap';
 import Welcome from './BoardPanel/Welcome';
 import WinnerMessage from './BoardPanel/WinnerMessage';
 import GameContext from '../context/GameContext';
@@ -10,7 +10,9 @@ import bombSound from '../sounds/bomb.mp3';
 
 const Board = () => {
 
-    //boardMap holds map of bomb locations with [column][row] indices - value is integer representing # of adjacent bombs (or 9 if cell is a bomb itself)
+    //boardMap is an object with rows as numerical properties
+    //each row is an object with cells as numerical properties
+    //each cell has 2 properties - status (can be covered, flagged, exposed, or exploded) and adjacent (integer representing # of adjacent bombs - or 9 if cell is a bomb itself) 
     const [boardMap, setBoardMap] = useState({});
 
     const contextData = useContext(GameContext);
@@ -30,6 +32,7 @@ const Board = () => {
     );
 
     useEffect( () => {
+        // handles loading of board map with game data on game reset
         const resetBoardMap = () => {
             let randomRange = [];
             for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
@@ -106,9 +109,10 @@ const Board = () => {
         }
     }
 
-    //cellsInfo is an array of objects with structure {location, value}
-    //location is an array with structure [column, row] for cell location to check
-    //value is # adjacent bombs of stepped on square (or 9 for bomb)
+    // handles uncovering of square and related game logic
+    // cellsInfo is an array of objects with structure {location, value}
+    // location is an array with structure [column, row] for cell location to check
+    // value is # adjacent bombs of stepped on square (or 9 for bomb)
     const stepSquare = (cellsInfo) => {
         let newBoardMap = boardMap;
         let checkNext = []; // array to hold location coordinates of cells adjacent to any 0 value squares
@@ -122,7 +126,7 @@ const Board = () => {
                         newBoardMap[cell[0]][cell[1]]['status'] = 'exploded';
                         throw('lost');
                     } else if (value === 0) {
-                        //expose clicked square
+                        // expose clicked square
                         newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
                         {contextData.sound && playPlop()}
                         for (let c = col-1; c <= col+1; c++) {
@@ -138,7 +142,7 @@ const Board = () => {
                         }
                         contextData.updateGameStatus('playing');              
                     } else {
-                        //expose clicked square
+                        // expose clicked square
                         newBoardMap[cell[0]][cell[1]]['status'] = 'exposed';
                         {contextData.sound && playPlop()}
                         contextData.updateGameStatus('playing');
@@ -160,6 +164,7 @@ const Board = () => {
         }     
     }
 
+    // handles right click of revealed square to reveal adjacent squares
     const stepAdjacent = (cell) => {
         let col = parseInt(cell[0]);
         let row = parseInt(cell[1]);
@@ -188,6 +193,7 @@ const Board = () => {
         }
     }
 
+    // handles status change of individual square
     const updateSquareStatus = (location, status) => {
         let col = location[0];
         let row = location[1];
@@ -198,21 +204,14 @@ const Board = () => {
         setBoardMap(newBoardMap);
     }
 
+    // render
     if (Object.keys(boardMap).length !== 0) {
         return (
                 <div id="board-panel-container">
                     <div id="game-board-container">
                         <h4 className="board-difficulty">{contextData.settings.difficulty}</h4>
                         <div id="game-board" style={{width: `${30*contextData.settings.boardSize[0]}px`}}>
-                            <div id="boardMap">
-                            {Object.entries(boardMap).map(([col, rows]) => {
-                                let squaresRender = Object.entries(rows).map(([rw, cell]) => {
-                                    let key = parseInt(((col-1)*contextData.settings.boardSize[0])) + parseInt(rw);
-                                    return (<BoardSquare key={key} location={[col, rw]} value={cell['adjacent']} sqStatus={(contextData.currentGame.status === 'won' || (contextData.currentGame.status === 'lost' && cell['status'] !== 'exploded')) ? 'exposed' : cell['status']} stepSquare={stepSquare} stepAdjacent={stepAdjacent} updateSquareStatus={updateSquareStatus}/>);
-                                });
-                                return (<div key={col} className="board-row">{squaresRender}</div>);
-                            })}
-                            </div>
+                            <BoardMap boardMap={boardMap} stepSquare={stepSquare} stepAdjacent={stepAdjacent} updateSquareStatus={updateSquareStatus}/>
                             {contextData.currentGame.status === 'won' &&
                                 <WinnerMessage />
                             }   

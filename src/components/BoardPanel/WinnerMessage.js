@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react';
 import GameContext from '../../context/GameContext';
 
+// Handles rendering of message on Game Win, along with name form for high score handling
 const WinnerMessage = () => {
     
     const [winnerName, setWinnerName] = useState('');

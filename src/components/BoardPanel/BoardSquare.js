@@ -4,6 +4,7 @@ import GameContext from '../../context/GameContext';
 import useSound from 'use-sound';
 import clickSound from '../../sounds/mouse-click.mp3';
 
+// Handles rendering each individual game board square and handles its UI
 const BoardSquare = ({location, value, sqStatus, stepSquare, stepAdjacent, updateSquareStatus}) => {
     
     const[squareStatus, setSquareStatus] = useState(sqStatus);
