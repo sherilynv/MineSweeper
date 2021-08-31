@@ -33,7 +33,7 @@ const WinnerMessage = () => {
                         <div className="mb-2">
                             <label htmlFor="player-name">Enter name:</label>
                             <input className="form-control" type="text" value={winnerName} onChange={onNameChange} name="player-name" />
-                            <input type="submit" value="Submit" />
+                            <input className="btn btn-danger btn-lg" style={{marginTop: '10px', color: '#ffffff', width: '100%'}} type="submit" value="Submit" />
                         </div>
                     </form>
                 </div>

@@ -6,7 +6,7 @@ import GameContext from '../context/GameContext';
 import useSound from 'use-sound';
 import plopSound from '../sounds/plop.mp3';
 import winSound from '../sounds/children-hooray.mp3';
-import bombSound from '../sounds/bomb.mp3';
+import bombSound from '../sounds/squish.mp3';
 
 const Board = () => {
 

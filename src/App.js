@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h2>Mine Sweeper</h2>
+        <h2>Octo-Sweeper</h2>
       </header>
       <Router>
         <Switch>
