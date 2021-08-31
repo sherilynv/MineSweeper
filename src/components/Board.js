@@ -1,5 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import BoardSquare from './BoardPanel/BoardSquare';
+import Welcome from './BoardPanel/Welcome';
+import WinnerMessage from './BoardPanel/WinnerMessage';
 import GameContext from '../context/GameContext';
 import useSound from 'use-sound';
 import plopSound from '../sounds/plop.mp3';
@@ -10,7 +12,6 @@ const Board = () => {
 
     //boardMap holds map of bomb locations with [column][row] indices - value is integer representing # of adjacent bombs (or 9 if cell is a bomb itself)
     const [boardMap, setBoardMap] = useState({});
-    const [winnerName, setWinnerName] = useState('');
 
     const contextData = useContext(GameContext);
 
@@ -27,17 +28,6 @@ const Board = () => {
         bombSound,
         { volume: 0.75 }
     );
-
-
-    //Handle high score form
-    const handleWinnerSubmit = (e) => {
-        e.preventDefault();
-        contextData.updateLeaders(winnerName);
-        contextData.updateGameStatus('start');
-    }
-    const onNameChange = (e) => {
-        setWinnerName(e.target.value);
-    }
 
     useEffect( () => {
         const resetBoardMap = () => {
@@ -224,26 +214,7 @@ const Board = () => {
                             })}
                             </div>
                             {contextData.currentGame.status === 'won' &&
-                                <div id="winner-message-container">
-                                    <div className="congrats">
-                                        <img src="/spekitOctopusWithWand.png"/>
-                                        {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) )
-                                            ? <div className="winner-message">New High Score!</div>
-                                            : <div className="winner-message">You won!</div>
-                                        }
-                                    </div>
-                                    {((contextData.gameTime < contextData.stats[`${contextData.settings.difficulty}Leader`].score) || (contextData.stats[`${contextData.settings.difficulty}Leader`].score === -1) ) && 
-                                        <div className="new-high-score">
-                                            <form onSubmit={(e) => handleWinnerSubmit(e)}>
-                                                <div className="mb-2">
-                                                    <label htmlFor="player-name">Enter name:</label>
-                                                    <input className="form-control" type="text" value={winnerName} onChange={onNameChange} name="player-name" />
-                                                    <input type="submit" value="Submit" />
-                                                </div>
-                                            </form>
-                                        </div>
-                                    }
-                                </div>
+                                <WinnerMessage />
                             }   
                         </div>
                     </div>
@@ -251,16 +222,7 @@ const Board = () => {
         );
     } else {
         return (
-            <div id="board-panel-container">
-                <div id="welcome-container">
-                    <div className="welcome-message">
-                        <img src="/spekitOctopusWithWand.png"/>
-                        <h4>Welcome to Mine Sweeper</h4>
-                        <p><em>{`(my coding challenge for the Spektacular Spekit)`}</em></p>
-                        <p>{`Avoid stepping on my friends to win!`}</p>
-                    </div>
-                </div>
-            </div>
+            <Welcome />
         );
     }
 }

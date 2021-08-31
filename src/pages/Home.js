@@ -8,7 +8,7 @@ const GamePage = () => {
     
     // State for game settings, stats, display and current game data
     // const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [10,10], totalBombs: 15, sound: true});
-    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [9,9], totalBombs: 10, sound: true});
+    const [settings, setSettings] = useState({difficulty: 'easy', boardSize: [9,9], totalBombs: 1, sound: true});
     const [sound, setSound] = useState(true);
     const [stats, setStats] = useState({easyLeader: {player: 'N/A', score: -1}, mediumLeader: {player: 'N/A', score: -1}, hardLeader: {player: 'N/A', score: -1}, gamesPlayed: 0, gamesWon: 0});
     const [display, setDisplay] = useState({mode: 'game'});
