@@ -40,7 +40,7 @@ const Board = () => {
             let n = 0;
             let bombCount;
             let pointers = {};
-            let generator = seedrandom('seed_'+Math.random());
+            let generator = seedrandom();
             
             // get select as many random positions (as array of numberical keys) as there are total bombs
             for (let i=1; i <= (contextData.settings.boardSize[0] * contextData.settings.boardSize[1]); i++) {
